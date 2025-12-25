@@ -1,8 +1,38 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Features
+
+- 🎨 Modern, animated portfolio design with dark pink/purple theme
+- 📧 Functional contact form with email notifications
+- 🎭 Framer Motion animations throughout
+- 📱 Fully responsive design
+- ⚡ Built with Next.js 15, React 19, and TypeScript
+- 🎯 SEO optimized
+
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Email (Important!)
+
+To enable the contact form, you need to set up email credentials:
+
+1. Copy `.env.local` and add your email credentials
+2. Follow the detailed setup guide in `EMAIL_SETUP.md`
+3. Quick setup:
+   - Generate a Gmail App Password at https://myaccount.google.com/apppasswords
+   - Add your email and app password to `.env.local`
+
+```env
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-16-character-app-password
+```
+
+### 3. Run the Development Server
 
 ```bash
 npm run dev
@@ -16,9 +46,59 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Customize Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Hero Section**: Edit `components/Hero.tsx` - Update name and title
+- **About Section**: Edit `components/About.tsx` - Update bio and features
+- **Skills**: Edit `components/Skills.tsx` - Add your skills and proficiency levels
+- **Projects**: Edit `components/Projects.tsx` - Replace with your actual projects
+- **Contact Info**: Edit `components/Contact.tsx` - Update email, phone, and location
+- **Footer**: Edit `components/Footer.tsx` - Update social media links
+
+### 5. Add Your Profile Image
+
+Replace `/public/hero.jpg` with your profile image (recommended: 400x400px, square format).
+
+## Project Structure
+
+```
+frontend/
+├── app/
+│   ├── api/
+│   │   └── contact/
+│   │       └── route.ts          # Email API endpoint
+│   ├── globals.css               # Global styles and animations
+│   ├── layout.tsx                # Root layout with Navbar
+│   └── page.tsx                  # Main page composition
+├── components/
+│   ├── About.tsx                 # About section
+│   ├── Contact.tsx               # Contact form
+│   ├── Footer.tsx                # Footer with social links
+│   ├── Hero.tsx                  # Hero section with profile image
+│   ├── Navbar.tsx                # Navigation bar
+│   ├── Projects.tsx              # Projects showcase
+│   └── Skills.tsx                # Skills display
+└── public/
+    └── hero.jpg                  # Your profile image
+```
+
+## Technologies Used
+
+- **Framework**: Next.js 15.1.1
+- **UI Library**: React 19.2.3
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion 12.23.26
+- **Icons**: Lucide React 0.562.0
+- **Email**: Nodemailer 6.9.16
+
+## Contact Form Features
+
+✅ Real-time email delivery using Nodemailer
+✅ Automatic confirmation emails to senders
+✅ Form validation and error handling
+✅ Animated success/error messages
+✅ Spam protection ready (can add reCAPTCHA)
 
 ## Learn More
 
