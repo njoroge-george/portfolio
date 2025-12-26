@@ -1,95 +1,70 @@
-import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+
+export const runtime = "nodejs";
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD, // Gmail App Password
+  },
+});
 
 export async function POST(request: NextRequest) {
   try {
     const { name, email, subject, message } = await request.json();
 
-    // Validate the data
+    // Validation
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: "All fields are required" },
         { status: 400 }
       );
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { error: "Invalid email format" },
         { status: 400 }
       );
     }
 
-    // Create a transporter using Gmail SMTP
-    // For production, use environment variables
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER, // Your Gmail address
-        pass: process.env.EMAIL_PASSWORD, // Your Gmail app password
-      },
-    });
-
-    // Email to you (the recipient)
-    const mailOptionsToYou = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Your email where you want to receive messages
+    // Email to you
+    await transporter.sendMail({
+      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      replyTo: email,
       subject: `Portfolio Contact: ${subject}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #ec4899;">New Contact Form Submission</h2>
-          <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
-            <p style="margin: 10px 0;"><strong>Email:</strong> ${email}</p>
-            <p style="margin: 10px 0;"><strong>Subject:</strong> ${subject}</p>
-            <div style="margin-top: 20px;">
-              <strong>Message:</strong>
-              <p style="margin-top: 10px; white-space: pre-wrap;">${message}</p>
-            </div>
-          </div>
-          <p style="color: #6b7280; font-size: 12px;">This message was sent from your portfolio contact form.</p>
-        </div>
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br />")}</p>
       `,
-    };
+    });
 
-    // Confirmation email to the sender
-    const mailOptionsToSender = {
-      from: process.env.EMAIL_USER,
+    // Confirmation email
+    await transporter.sendMail({
+      from: `"George Njoroge" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Thank you for contacting me!',
+      subject: "Thanks for reaching out!",
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #ec4899;">Thank You for Reaching Out!</h2>
-          <p>Hi ${name},</p>
-          <p>Thank you for contacting me through my portfolio. I've received your message and will get back to you as soon as possible.</p>
-          
-          <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 10px 0;"><strong>Your message:</strong></p>
-            <p style="margin-top: 10px; white-space: pre-wrap;">${message}</p>
-          </div>
-          
-          <p>Best regards,<br/>George Njoroge</p>
-          
-          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
-          <p style="color: #6b7280; font-size: 12px;">This is an automated confirmation email.</p>
-        </div>
+        <p>Hi ${name},</p>
+        <p>Thanks for contacting me. I’ve received your message and will reply shortly.</p>
+        <p><strong>Your message:</strong></p>
+        <p>${message.replace(/\n/g, "<br />")}</p>
+        <p>— George</p>
       `,
-    };
+    });
 
-    // Send both emails
-    await transporter.sendMail(mailOptionsToYou);
-    await transporter.sendMail(mailOptionsToSender);
-
-    return NextResponse.json(
-      { message: 'Email sent successfully!' },
-      { status: 200 }
-    );
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Email error:", error);
     return NextResponse.json(
-      { error: 'Failed to send email. Please try again later.' },
+      { error: "Failed to send email" },
       { status: 500 }
     );
   }
