@@ -19,8 +19,8 @@ const projects = [
         name: "Document Approval System",
         description: "Enterprise document workflow system with multi-level approvals, digital signatures, and audit trails.",
         tech: ["Next.js", "TypeScript", "PostgreSQL", "Redis"],
-        github: "https://github.com/yourusername/doc-approval",
-        live: "https://doc-approval-demo.com",
+        github: "https://github.com/njoroge-george/doc-approval",
+        live: "/coming-soon",
         featured: true,
         gradient: "from-lime-400 to-teal-500",
         emoji: "📋"
@@ -29,8 +29,8 @@ const projects = [
         name: "Property Management System (PMS)",
         description: "Full-featured property management platform with tenant management, lease tracking, maintenance requests, and financial reporting.",
         tech: ["Next.js", "NestJS", "PostgreSQL", "AWS S3"],
-        github: "https://github.com/yourusername/pms",
-        live: "https://pms-demo.com",
+        github: "https://github.com/njoroge-george/pms",
+        live: "/coming-soon",
         featured: true,
         gradient: "from-emerald-400 to-lime-500",
         emoji: "🏢"
@@ -39,8 +39,8 @@ const projects = [
         name: "E-Commerce Platform",
         description: "A full-stack e-commerce solution with cart management, payment integration, and admin dashboard.",
         tech: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
-        github: "https://github.com/yourusername/ecommerce",
-        live: "https://ecommerce-demo.com",
+        github: "https://github.com/njoroge-george/ecommerce",
+        live: "/coming-soon",
         featured: false,
         gradient: "from-rose-400 to-pink-500",
         emoji: "🛍️"
@@ -49,8 +49,8 @@ const projects = [
         name: "Task Management App",
         description: "Collaborative task management tool with real-time updates, team collaboration, and analytics.",
         tech: ["Next.js", "Node.js", "Postgresql", "Socket.io"],
-        github: "https://github.com/yourusername/task-manager",
-        live: "https://task-manager-demo.com",
+        github: "https://github.com/njoroge-george/task-manager",
+        live: "https://taskmanager.geenjoroge.org",
         featured: false,
         gradient: "from-teal-400 to-cyan-500",
         emoji: "✅"
@@ -59,8 +59,8 @@ const projects = [
         name: "Analytics Dashboard",
         description: "Real-time analytics platform with interactive charts, custom reports, and data visualization.",
         tech: ["Next.js", "NestJS", "PostgreSQL", "Chart.js"],
-        github: "https://github.com/yourusername/analytics",
-        live: "https://analytics-demo.com",
+        github: "https://github.com/njoroge-george/analytics",
+        live: "/coming-soon",
         featured: false,
         gradient: "from-lime-300 to-emerald-400",
         emoji: "📊"
@@ -173,8 +173,8 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                         </motion.a>
                         <motion.a
                             href={project.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={project.live.startsWith('/') ? '_self' : '_blank'}
+                            rel={project.live.startsWith('/') ? undefined : 'noopener noreferrer'}
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             className="p-4 bg-black/80 rounded-full border border-lime-400/50 hover:border-lime-300 transition-colors group/btn"
