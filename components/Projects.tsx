@@ -2,33 +2,18 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink, Github, Star, Zap } from "lucide-react";
-import { MouseEvent, useState } from "react";
+import { useState, MouseEvent } from "react";
 
-type ProjectStatus = "live" | "coming-soon";
-
-interface Project {
-    name: string;
-    description: string;
-    tech: string[];
-    github: string;
-    live: string;
-    featured: boolean;
-    gradient: string;
-    emoji: string;
-    status: ProjectStatus;
-}
-
-const projects: Project[] = [
+const projects = [
     {
         name: "Home Manager App",
         description: "Comprehensive home management system for tracking maintenance, expenses, inventory, and smart home integration.",
-        tech: ["React Native", "Node.js", "MongoDB", "Firebase"],
-        github: "https://github.com/yourusername/home-manager",
-        live: "https://home-manager-demo.com",
+        tech: ["Next.js", "TypeScript", "Node.js", "Postgresql", "Material UI"],
+        github: "https://github.com/njoroge-george/home-manager-app",
+        live: "https://homemanager.geenjoroge.org",
         featured: true,
-        gradient: "from-lime-400 to-emerald-600",
-        emoji: "🏠",
-        status: "coming-soon",
+        gradient: "from-mint-400 to-emerald-500",
+        emoji: "🏠"
     },
     {
         name: "Document Approval System",
@@ -37,9 +22,8 @@ const projects: Project[] = [
         github: "https://github.com/yourusername/doc-approval",
         live: "https://doc-approval-demo.com",
         featured: true,
-        gradient: "from-lime-300 to-sky-500",
-        emoji: "📋",
-        status: "coming-soon",
+        gradient: "from-lime-400 to-teal-500",
+        emoji: "📋"
     },
     {
         name: "Property Management System (PMS)",
@@ -49,8 +33,7 @@ const projects: Project[] = [
         live: "https://pms-demo.com",
         featured: true,
         gradient: "from-emerald-400 to-lime-500",
-        emoji: "🏢",
-        status: "coming-soon",
+        emoji: "🏢"
     },
     {
         name: "E-Commerce Platform",
@@ -59,20 +42,18 @@ const projects: Project[] = [
         github: "https://github.com/yourusername/ecommerce",
         live: "https://ecommerce-demo.com",
         featured: false,
-        gradient: "from-lime-300 to-sky-400",
-        emoji: "🛍️",
-        status: "coming-soon",
+        gradient: "from-rose-400 to-pink-500",
+        emoji: "🛍️"
     },
     {
         name: "Task Management App",
         description: "Collaborative task management tool with real-time updates, team collaboration, and analytics.",
-        tech: ["React", "Node.js", "MongoDB", "Socket.io"],
+        tech: ["Next.js", "Node.js", "Postgresql", "Socket.io"],
         github: "https://github.com/yourusername/task-manager",
-        live: "https://taskflow.geenjoroge.org",
+        live: "https://task-manager-demo.com",
         featured: false,
-        gradient: "from-lime-400 to-blue-500",
-        emoji: "✅",
-        status: "live",
+        gradient: "from-teal-400 to-cyan-500",
+        emoji: "✅"
     },
     {
         name: "Analytics Dashboard",
@@ -82,20 +63,18 @@ const projects: Project[] = [
         live: "https://analytics-demo.com",
         featured: false,
         gradient: "from-lime-300 to-emerald-400",
-        emoji: "📊",
-        status: "coming-soon",
+        emoji: "📊"
     },
 ];
 
 interface ProjectCardProps {
-    project: Project;
+    project: typeof projects[0];
     index: number;
 }
 
 function ProjectCard({ project, index }: ProjectCardProps) {
     const [rotateX, setRotateX] = useState(0);
     const [rotateY, setRotateY] = useState(0);
-    const isComingSoon = project.status === "coming-soon";
 
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
@@ -114,11 +93,6 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         setRotateY(0);
     };
 
-    const handleCardClick = () => {
-        if (isComingSoon) return;
-        window.open(project.live, "_blank", "noopener,noreferrer");
-    };
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -131,38 +105,22 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                 transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
                 transition: 'transform 0.1s ease-out',
             }}
-            className={`group relative ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
-            onClick={handleCardClick}
-            whileHover={{ y: -10, scale: 1.01 }}
-            whileTap={{ scale: 0.995 }}
+            className="group relative"
         >
-            <div className="relative h-full rounded-3xl p-[1.5px] bg-gradient-to-br from-white/15 via-transparent to-white/5">
-                <motion.div
-                    className="absolute inset-0 rounded-3xl bg-gradient-to-r from-lime-400/10 via-transparent to-sky-400/10 blur-2xl"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                />
-                <div className="relative bg-black/80 backdrop-blur-sm rounded-[calc(1.5rem-1.5px)] overflow-hidden border border-white/10 transition-all duration-300 h-full shadow-[0_25px_60px_-30px_rgba(0,0,0,0.8)] group-hover:border-lime-300/60">
-                    <div className="absolute inset-px rounded-[calc(1.5rem-3px)] bg-gradient-to-br from-white/5 via-white/0 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    {/* Animated gradient background */}
-                    <div className="relative h-56 overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
-                        <motion.div
-                            className="absolute -inset-12 bg-gradient-to-br from-lime-500/20 via-transparent to-sky-500/20 blur-3xl"
-                            animate={{ rotate: [0, 45, 0], scale: [1, 1.1, 1] }}
-                            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_65%)]" />
-                        <motion.div
-                            className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-30`}
-                            animate={{
-                                scale: [1, 1.1, 1],
-                            }}
-                            transition={{
-                                duration: 5,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                        />
+            <div className="bg-black/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800 hover:border-mint-400/60 transition-all duration-300 h-full shadow-2xl hover:shadow-mint-400/20">
+                {/* Animated gradient background */}
+                <div className="relative h-56 overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
+                    <motion.div
+                        className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-30`}
+                        animate={{
+                            scale: [1, 1.1, 1],
+                        }}
+                        transition={{
+                            duration: 5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
                     
                     {/* Emoji Display */}
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -196,98 +154,47 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                         </motion.div>
                     )}
                     
-                    {/* Action buttons overlay */}
+                    {/* Action buttons overlay - Sweet mint */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="absolute inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center gap-4"
+                        className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center gap-4"
                     >
-                        {isComingSoon ? (
-                            <motion.span
-                                initial={{ opacity: 0.4 }}
-                                animate={{
-                                    opacity: [0.4, 1, 0.4],
-                                    letterSpacing: [4, 8, 4],
-                                }}
-                                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                                className="px-5 py-3 rounded-full border border-dashed border-sky-400/50 text-sm uppercase text-sky-200 tracking-[0.4em] bg-sky-500/10"
-                            >
-                                Coming Soon
-                            </motion.span>
-                        ) : (
-                            <>
-                                <motion.a
-                                    href={project.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    className="p-4 bg-black/80 rounded-full border border-lime-400/50 hover:border-lime-300 transition-colors group/btn"
-                                    aria-label="View on GitHub"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <Github size={24} className="text-white group-hover/btn:text-lime-300 transition-colors" />
-                                </motion.a>
-                                <motion.a
-                                    href={project.live}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    className="p-4 bg-black/80 rounded-full border border-lime-400/50 hover:border-lime-300 transition-colors group/btn"
-                                    aria-label="View live demo"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <ExternalLink size={24} className="text-white group-hover/btn:text-lime-300 transition-colors" />
-                                </motion.a>
-                            </>
-                        )}
+                        <motion.a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-4 bg-black/80 rounded-full border border-mint-400/50 hover:border-mint-300 transition-colors group/btn"
+                            aria-label="View on GitHub"
+                        >
+                            <Github size={24} className="text-white group-hover/btn:text-mint-300 transition-colors" />
+                        </motion.a>
+                        <motion.a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-4 bg-black/80 rounded-full border border-lime-400/50 hover:border-lime-300 transition-colors group/btn"
+                            aria-label="View live demo"
+                        >
+                            <ExternalLink size={24} className="text-white group-hover/btn:text-lime-300 transition-colors" />
+                        </motion.a>
                     </motion.div>
                 </div>
 
                 <div className="p-6 bg-black/60">
                     <motion.h3 
-                        className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-lime-300 group-hover:to-sky-400 transition-all duration-300"
+                        className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mint-300 group-hover:to-lime-400 transition-all duration-300"
                     >
                         {project.name}
                     </motion.h3>
                     
-                    <div className="mb-6 space-y-4">
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            {project.description}
-                        </p>
-                        <div className="flex items-center gap-3">
-                            {isComingSoon ? (
-                                <motion.span
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.1 * index }}
-                                    viewport={{ once: true }}
-                                    className="text-[11px] uppercase tracking-[0.3em] text-sky-200 px-3 py-1 rounded-full border border-dashed border-sky-400/40"
-                                >
-                                    Coming Soon
-                                </motion.span>
-                            ) : (
-                                <motion.span
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.1 * index }}
-                                    viewport={{ once: true }}
-                                    className="text-[11px] uppercase tracking-[0.3em] text-lime-300 px-3 py-1 rounded-full border border-lime-400/40 shadow-[0_0_15px_rgba(163,230,53,0.2)]"
-                                >
-                                    Live
-                                </motion.span>
-                            )}
-                            <div className="flex-1 h-px bg-white/10 rounded-full overflow-hidden">
-                                <motion.span
-                                    className={`block h-full ${isComingSoon ? 'bg-gradient-to-r from-sky-300 via-sky-500/20 to-transparent' : 'bg-gradient-to-r from-lime-400 via-emerald-400 to-transparent'}`}
-                                    animate={{ x: ['-30%', '100%'] }}
-                                    transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    <p className="text-gray-400 text-sm mb-6 line-clamp-2 leading-relaxed">
+                        {project.description}
+                    </p>
 
                     <div className="flex flex-wrap gap-2">
                         {project.tech.map((tech, techIndex) => (
@@ -298,24 +205,22 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                                 transition={{ delay: (index * 0.1) + (techIndex * 0.05) }}
                                 viewport={{ once: true }}
                                 whileHover={{ scale: 1.1, y: -2 }}
-                                className={`group/tech text-xs px-3 py-1.5 rounded-full border font-medium transition-all cursor-default relative overflow-hidden backdrop-blur-sm ${
+                                className={`text-xs px-3 py-1.5 rounded-full border font-medium transition-all cursor-default ${
                                     techIndex % 3 === 0 
-                                        ? 'bg-gradient-to-r from-lime-400/20 to-emerald-400/20 border-lime-400/40 text-lime-200 hover:border-lime-300 hover:shadow-lg hover:shadow-lime-400/20'
+                                        ? 'bg-gradient-to-r from-mint-400/20 to-emerald-400/20 border-mint-400/40 text-mint-300 hover:border-mint-300 hover:shadow-lg hover:shadow-mint-400/20'
                                         : techIndex % 3 === 1
-                                        ? 'bg-gradient-to-r from-emerald-400/20 to-lime-500/20 border-emerald-400/40 text-emerald-200 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-400/20'
-                                        : 'bg-gradient-to-r from-sky-400/20 to-blue-500/20 border-sky-400/40 text-sky-200 hover:border-sky-300 hover:shadow-lg hover:shadow-sky-400/20'
+                                        ? 'bg-gradient-to-r from-lime-400/20 to-lime-500/20 border-lime-400/40 text-lime-300 hover:border-lime-300 hover:shadow-lg hover:shadow-lime-400/20'
+                                        : 'bg-gradient-to-r from-rose-400/20 to-pink-400/20 border-rose-400/40 text-rose-300 hover:border-rose-300 hover:shadow-lg hover:shadow-rose-400/20'
                                 }`}
                             >
-                                <span className="absolute inset-0 bg-white/5 opacity-0 group-hover/tech:opacity-30 transition-opacity duration-300" />
-                                <span className="relative z-10">{tech}</span>
+                                {tech}
                             </motion.span>
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
-    </motion.div>
-);
+        </motion.div>
+    );
 }
 
 export default function Projects() {
@@ -324,7 +229,7 @@ export default function Projects() {
             {/* Animated background - Sweet blend */}
             <div className="absolute inset-0 opacity-10">
                 <motion.div
-                    className="absolute top-1/3 left-1/3 w-96 h-96 bg-lime-400/50 rounded-full blur-3xl"
+                    className="absolute top-1/3 left-1/3 w-96 h-96 bg-mint-400/50 rounded-full blur-3xl"
                     animate={{
                         x: [0, 100, 0],
                         y: [0, 50, 0],
@@ -350,7 +255,7 @@ export default function Projects() {
                     }}
                 />
                 <motion.div
-                    className="absolute top-1/2 right-1/4 w-80 h-80 bg-sky-400/30 rounded-full blur-3xl"
+                    className="absolute top-1/2 right-1/4 w-80 h-80 bg-rose-400/30 rounded-full blur-3xl"
                     animate={{
                         x: [0, 50, 0],
                         y: [0, -30, 0],
@@ -362,8 +267,6 @@ export default function Projects() {
                         ease: "easeInOut"
                     }}
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:140px_140px] opacity-30" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.08),_transparent_60%)]" />
             </div>
 
             <div className="relative max-w-7xl mx-auto px-6">
@@ -386,7 +289,7 @@ export default function Projects() {
                         </motion.div>
                         
                         <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                            Featured <span className="bg-gradient-to-r from-lime-300 to-sky-400 bg-clip-text text-transparent">Projects</span>
+                            Featured <span className="bg-gradient-to-r from-mint-300 to-lime-400 bg-clip-text text-transparent">Projects</span>
                         </h2>
                         
                         <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
@@ -394,7 +297,7 @@ export default function Projects() {
                         </p>
                         
                         <motion.div 
-                            className="h-1 w-20 bg-gradient-to-r from-lime-400 to-sky-400 mx-auto rounded-full shadow-lg shadow-lime-400/30"
+                            className="h-1 w-20 bg-gradient-to-r from-mint-400 to-lime-400 mx-auto rounded-full shadow-lg shadow-mint-400/30"
                             initial={{ width: 0 }}
                             whileInView={{ width: 80 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
